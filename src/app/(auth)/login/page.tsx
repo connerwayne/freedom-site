@@ -1,44 +1,44 @@
 import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
 
-import { getSession } from "@/lib/auth";
+import { LoginSsoButtons } from "@/components/auth/login-sso-buttons";
+import { DevBypassButton } from "@/components/auth/dev-bypass-button";
+import { authOptions } from "@/lib/auth";
 
 export default async function LoginPage({
   searchParams,
 }: {
   searchParams?: Promise<{ next?: string }>;
 }) {
-  const session = await getSession();
+  const session = await getServerSession(authOptions);
   const params = await searchParams;
   const nextPath = params?.next || "/dashboard";
+  const providerStatus = {
+    google: Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET),
+    azureAd: Boolean(process.env.AZURE_AD_CLIENT_ID && process.env.AZURE_AD_CLIENT_SECRET),
+    github: Boolean(process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET),
+  };
 
-  if (session) {
+  if (session?.user) {
     redirect(nextPath);
   }
 
   return (
     <main className="auth-shell">
       <section className="auth-card">
-        <span className="eyebrow">Demo auth</span>
-        <h1>Sign in to reach the protected routes.</h1>
+        <span className="eyebrow">Secure SSO</span>
+        <h1>Sign in with your identity provider.</h1>
         <p>
-          This scaffold uses a simple cookie-based demo session so you can wire the
-          route boundaries first and swap in your real auth provider later.
+          Google, Microsoft, and GitHub are wired through NextAuth OAuth. Configure
+          provider credentials in your environment, then sign in to access the
+          protected web apps.
         </p>
 
-        <form action="/api/auth/login" className="auth-form" method="post">
-          <input name="next" type="hidden" value={nextPath} />
-          <div className="field">
-            <label htmlFor="email">Email</label>
-            <input defaultValue="demo@freedom.site" id="email" name="email" type="email" />
-          </div>
-          <div className="field">
-            <label htmlFor="name">Name</label>
-            <input defaultValue="Demo User" id="name" name="name" type="text" />
-          </div>
-          <button className="primary-button" type="submit">
-            Create session
-          </button>
-        </form>
+        <LoginSsoButtons callbackUrl={nextPath} providerStatus={providerStatus} />
+
+        {process.env.NODE_ENV !== "production" && (
+          <DevBypassButton callbackUrl={nextPath} />
+        )}
 
         <p className="form-hint">After sign-in, try `/dashboard/projects/alpha` and `/account/settings`.</p>
       </section>
