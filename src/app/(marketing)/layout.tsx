@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { ThemeToggle } from "@/components/theme/theme-toggle";
+
 export default function MarketingLayout({
   children,
 }: Readonly<{
@@ -9,13 +11,15 @@ export default function MarketingLayout({
     <div className="marketing-shell">
       <header className="topbar">
         <Link className="brand" href="/">
-          Freedom Site
+          Freedom Landscaping
         </Link>
         <nav className="topnav">
+          <Link href="/#services">Services</Link>
           <Link href="/about">About</Link>
-          <Link href="/dashboard">Dashboard</Link>
-          <Link className="nav-cta" href="/login">
-            Sign in
+          <Link href="/login" className="topnav-signin">Sign in</Link>
+          <ThemeToggle />
+          <Link className="nav-cta" href="/#contact">
+            Get a Quote
           </Link>
         </nav>
       </header>

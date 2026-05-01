@@ -2,13 +2,44 @@
 
 import { signIn } from "next-auth/react";
 
-export function DevBypassButton({ callbackUrl }: { callbackUrl: string }) {
+type DevBypassButtonsProps = {
+  adminCallbackUrl: string;
+  managerCallbackUrl: string;
+  clientCallbackUrl: string;
+};
+
+function handleDevSignIn(role: "admin" | "manager" | "client", callbackUrl: string) {
+  void signIn("dev-bypass", {
+    callbackUrl,
+    role,
+  });
+}
+
+export function DevBypassButton({
+  adminCallbackUrl,
+  managerCallbackUrl,
+  clientCallbackUrl,
+}: DevBypassButtonsProps) {
   return (
-    <button
-      className="dev-bypass-btn"
-      onClick={() => signIn("dev-bypass", { callbackUrl })}
-    >
-      ⚙ Bypass Sign In (dev only)
-    </button>
+    <div className="dev-bypass-group">
+      <button
+        className="dev-bypass-btn dev-bypass-admin"
+        onClick={() => handleDevSignIn("admin", adminCallbackUrl)}
+      >
+        ⚙ Bypass as Admin
+      </button>
+      <button
+        className="dev-bypass-btn dev-bypass-manager"
+        onClick={() => handleDevSignIn("manager", managerCallbackUrl)}
+      >
+        📋 Bypass as Manager
+      </button>
+      <button
+        className="dev-bypass-btn dev-bypass-client"
+        onClick={() => handleDevSignIn("client", clientCallbackUrl)}
+      >
+        👤 Bypass as Client
+      </button>
+    </div>
   );
 }

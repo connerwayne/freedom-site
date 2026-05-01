@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
 
+import { ThemeToggle } from "@/components/theme/theme-toggle";
+
 type AuthErrorPageProps = {
   searchParams?: Promise<{
     error?: string;
@@ -145,7 +147,10 @@ export default async function AuthErrorPage({ searchParams }: AuthErrorPageProps
   return (
     <main className="auth-shell">
       <section className="auth-card">
-        <span className="eyebrow">OAuth callback error</span>
+        <div className="auth-card-top">
+          <span className="eyebrow">OAuth callback error</span>
+          <ThemeToggle />
+        </div>
         <h1>{errorView.title}</h1>
         <p>{errorView.detail}</p>
 

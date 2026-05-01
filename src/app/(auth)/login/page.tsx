@@ -3,6 +3,8 @@ import { getServerSession } from "next-auth";
 
 import { LoginSsoButtons } from "@/components/auth/login-sso-buttons";
 import { DevBypassButton } from "@/components/auth/dev-bypass-button";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
+import { getDefaultPathForRole, resolvePostLoginPath } from "@/lib/access";
 import { authOptions } from "@/lib/auth";
 
 export default async function LoginPage({
@@ -13,6 +15,9 @@ export default async function LoginPage({
   const session = await getServerSession(authOptions);
   const params = await searchParams;
   const nextPath = params?.next || "/dashboard";
+  const adminCallbackUrl = getDefaultPathForRole("admin");
+  const managerCallbackUrl = getDefaultPathForRole("manager");
+  const clientCallbackUrl = getDefaultPathForRole("client");
   const providerStatus = {
     google: Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET),
     azureAd: Boolean(process.env.AZURE_AD_CLIENT_ID && process.env.AZURE_AD_CLIENT_SECRET),
@@ -20,27 +25,36 @@ export default async function LoginPage({
   };
 
   if (session?.user) {
-    redirect(nextPath);
+    redirect(resolvePostLoginPath(session.user.role, nextPath));
   }
 
   return (
     <main className="auth-shell">
       <section className="auth-card">
-        <span className="eyebrow">Secure SSO</span>
-        <h1>Sign in with your identity provider.</h1>
+        <div className="auth-card-top">
+          <span className="eyebrow">Owner portal</span>
+          <ThemeToggle />
+        </div>
+        <h1>Welcome back.</h1>
         <p>
-          Google, Microsoft, and GitHub are wired through NextAuth OAuth. Configure
-          provider credentials in your environment, then sign in to access the
-          protected web apps.
+          Sign in to access your Freedom Landscaping dashboard — manage jobs,
+          track projects, and stay on top of your business.
         </p>
 
         <LoginSsoButtons callbackUrl={nextPath} providerStatus={providerStatus} />
 
         {process.env.NODE_ENV !== "production" && (
-          <DevBypassButton callbackUrl={nextPath} />
+          <DevBypassButton
+            adminCallbackUrl={adminCallbackUrl}
+            managerCallbackUrl={managerCallbackUrl}
+            clientCallbackUrl={clientCallbackUrl}
+          />
         )}
 
-        <p className="form-hint">After sign-in, try `/dashboard/projects/alpha` and `/account/settings`.</p>
+        <p className="form-hint">
+          In development, use the bypass buttons to enter the admin workspace, the
+          manager portal, or the client billing portal instantly.
+        </p>
       </section>
     </main>
   );

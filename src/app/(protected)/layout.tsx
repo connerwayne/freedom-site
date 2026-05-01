@@ -23,6 +23,7 @@ export default async function ProtectedLayout({
         user={{
           name: session.user.name || "Authenticated User",
           email: session.user.email || "no-email@configured",
+          role: session.user.role,
         }}
       />
       <div className="app-stage">{children}</div>
