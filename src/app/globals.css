@@ -151,7 +151,9 @@ main {
   transform: translateY(-1px);
 }
 
-.theme-toggle-option.is-active {
+html[data-theme-preference="system"] .theme-toggle-option[data-theme-value="system"],
+html[data-theme-preference="light"] .theme-toggle-option[data-theme-value="light"],
+html[data-theme-preference="dark"] .theme-toggle-option[data-theme-value="dark"] {
   background: var(--forest);
   color: #f0fbe8;
 }
@@ -1625,7 +1627,9 @@ html[data-theme="dark"] .theme-toggle-option {
   color: var(--muted);
 }
 
-html[data-theme="dark"] .theme-toggle-option.is-active,
+html[data-theme="dark"][data-theme-preference="system"] .theme-toggle-option[data-theme-value="system"],
+html[data-theme="dark"][data-theme-preference="light"] .theme-toggle-option[data-theme-value="light"],
+html[data-theme="dark"][data-theme-preference="dark"] .theme-toggle-option[data-theme-value="dark"],
 html[data-theme="dark"] .mini-nav a.is-active,
 html[data-theme="dark"] .nav-cta,
 html[data-theme="dark"] .primary-link,

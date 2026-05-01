@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { themeStorageKey } from "@/lib/theme";
 
@@ -37,13 +37,13 @@ function applyTheme(preference: ThemePreference) {
 }
 
 export function ThemeToggle() {
-  const [preference, setPreference] = useState<ThemePreference>(getStoredThemePreference);
-
   useEffect(() => {
+    const preference = getStoredThemePreference();
+
     applyTheme(preference);
 
     window.localStorage.setItem(themeStorageKey, preference);
-  }, [preference]);
+  }, []);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -64,7 +64,8 @@ export function ThemeToggle() {
   }, []);
 
   function handlePreferenceChange(nextPreference: ThemePreference) {
-    setPreference(nextPreference);
+    window.localStorage.setItem(themeStorageKey, nextPreference);
+    applyTheme(nextPreference);
   }
 
   return (
@@ -72,7 +73,8 @@ export function ThemeToggle() {
       {themeOptions.map((option) => (
         <button
           key={option.value}
-          className={`theme-toggle-option${preference === option.value ? " is-active" : ""}`}
+          className="theme-toggle-option"
+          data-theme-value={option.value}
           onClick={() => handlePreferenceChange(option.value)}
           type="button"
         >
