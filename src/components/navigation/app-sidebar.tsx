@@ -4,18 +4,20 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { SignOutButton } from "@/components/auth/sign-out-button";
-import type { SessionUser } from "@/lib/auth";
 import { webApps, workspaceLinks } from "@/lib/web-apps";
 
 type AppSidebarProps = {
-  session: SessionUser;
+  user: {
+    name: string;
+    email: string;
+  };
 };
 
 function isActivePath(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function AppSidebar({ session }: AppSidebarProps) {
+export function AppSidebar({ user }: AppSidebarProps) {
   const pathname = usePathname();
 
   return (
@@ -25,8 +27,8 @@ export function AppSidebar({ session }: AppSidebarProps) {
           <Link className="brand" href="/dashboard">
             Freedom Site
           </Link>
-          <p>{session.name}</p>
-          <p>{session.email}</p>
+          <p>{user.name}</p>
+          <p>{user.email}</p>
         </div>
 
         <div className="sidebar-group">

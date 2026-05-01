@@ -1,54 +1,59 @@
-import { cookies } from "next/headers";
+import type { NextAuthOptions } from "next-auth";
+import AzureADProvider from "next-auth/providers/azure-ad";
+import CredentialsProvider from "next-auth/providers/credentials";
+import GitHubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 
-export const SESSION_COOKIE = "freedom_session";
+export const protectedMatchers = [
+  "/dashboard/:path*",
+  "/studio/:path*",
+  "/insights/:path*",
+  "/account/:path*",
+] as const;
 
-export type SessionUser = {
-  email: string;
-  name: string;
+export const authOptions: NextAuthOptions = {
+  secret:
+    process.env.NEXTAUTH_SECRET ??
+    (process.env.NODE_ENV !== "production"
+      ? "dev-secret-not-for-production-use"
+      : undefined),
+  session: {
+    strategy: "jwt",
+  },
+  pages: {
+    signIn: "/login",
+    error: "/auth/error",
+  },
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+    }),
+    AzureADProvider({
+      clientId: process.env.AZURE_AD_CLIENT_ID ?? "",
+      clientSecret: process.env.AZURE_AD_CLIENT_SECRET ?? "",
+      tenantId: process.env.AZURE_AD_TENANT_ID ?? "common",
+    }),
+    GitHubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID ?? "",
+      clientSecret: process.env.GITHUB_CLIENT_SECRET ?? "",
+    }),
+    ...(process.env.NODE_ENV !== "production"
+      ? [
+          CredentialsProvider({
+            id: "dev-bypass",
+            name: "Dev Bypass",
+            credentials: {},
+            async authorize() {
+              return {
+                id: "dev-user",
+                name: "Dev User",
+                email: "dev@localhost",
+                image: null,
+              };
+            },
+          }),
+        ]
+      : []),
+  ],
 };
-
-export const demoUser: SessionUser = {
-  email: "demo@freedom.site",
-  name: "Demo User",
-};
-
-export const protectedPaths = ["/dashboard", "/studio", "/insights", "/account"] as const;
-
-export function encodeSession(user: SessionUser) {
-  return Buffer.from(JSON.stringify(user)).toString("base64url");
-}
-
-export function decodeSession(value?: string | null): SessionUser | null {
-  if (!value) {
-    return null;
-  }
-
-  try {
-    const parsed = JSON.parse(Buffer.from(value, "base64url").toString("utf8"));
-
-    if (
-      typeof parsed === "object" &&
-      parsed !== null &&
-      typeof parsed.email === "string" &&
-      typeof parsed.name === "string"
-    ) {
-      return {
-        email: parsed.email,
-        name: parsed.name,
-      };
-    }
-  } catch {
-    return null;
-  }
-
-  return null;
-}
-
-export async function getSession() {
-  const cookieStore = await cookies();
-  return decodeSession(cookieStore.get(SESSION_COOKIE)?.value);
-}
-
-export async function isAuthenticated() {
-  return (await getSession()) !== null;
-}
