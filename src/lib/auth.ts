@@ -12,7 +12,7 @@ export const demoUser: SessionUser = {
   name: "Demo User",
 };
 
-export const protectedPaths = ["/dashboard", "/account"] as const;
+export const protectedPaths = ["/dashboard", "/studio", "/insights", "/account"] as const;
 
 export function encodeSession(user: SessionUser) {
   return Buffer.from(JSON.stringify(user)).toString("base64url");
