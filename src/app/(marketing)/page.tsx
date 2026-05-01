@@ -1,78 +1,147 @@
 import Link from "next/link";
 
-const routeCards = [
+const services = [
   {
-    title: "Public marketing surface",
-    description: "Keep landing pages, pricing, docs, and other unauthenticated content in a dedicated route group.",
-    path: "src/app/(marketing)",
+    icon: "🌿",
+    title: "Lawn Maintenance",
+    description:
+      "Weekly or bi-weekly mowing, edging, and trimming to keep your lawn thick, green, and healthy all season long.",
   },
   {
-    title: "Auth entry point",
-    description: "Use a standalone auth group so login and onboarding flows can opt out of the app shell.",
-    path: "src/app/(auth)/login",
+    icon: "🍂",
+    title: "Yard Cleanup",
+    description:
+      "Spring and fall cleanups, leaf removal, debris hauling, and bed clearing to refresh your property any time of year.",
   },
   {
-    title: "Protected app area",
-    description: "Group authenticated pages under a protected layout and back it with middleware.",
-    path: "src/app/(protected)",
+    icon: "🪨",
+    title: "Light Construction",
+    description:
+      "Retaining walls, garden borders, stone pathways, and small hardscape installations built with care and built to last.",
+  },
+  {
+    icon: "🌱",
+    title: "Mulching & Bed Care",
+    description:
+      "Fresh mulch delivery and installation, bed edging, and weeding for a clean, polished, professional finish.",
+  },
+  {
+    icon: "✂️",
+    title: "Bush & Hedge Trimming",
+    description:
+      "Shape and maintain hedges, shrubs, and ornamental plantings to sharpen your curb appeal and keep growth in check.",
+  },
+  {
+    icon: "🏡",
+    title: "Seasonal Services",
+    description:
+      "Gutter cleaning, snow removal, and storm cleanup so your property stays safe and presentable through every season.",
+  },
+];
+
+const reasons = [
+  {
+    title: "Owner on every job",
+    body: "You hired me — I show up. No subcontractors, no crews that change week to week. You get the same person every time.",
+  },
+  {
+    title: "Honest, upfront pricing",
+    body: "Free estimates with no pressure. The price I quote is the price you pay — no hidden fees or surprise add-ons.",
+  },
+  {
+    title: "Local & dependable",
+    body: "I'm a neighbor, not a franchise. I care about the reputation I've built in this community and it shows in my work.",
   },
 ];
 
 export default function HomePage() {
   return (
     <main>
+      {/* Hero */}
       <section className="hero">
         <article className="hero-card">
-          <span className="eyebrow">Next.js App Router scaffold</span>
-          <h1>Nested routes and protected flows without starter noise.</h1>
+          <span className="eyebrow">Serving the local area</span>
+          <h1>Your lawn, our pride.</h1>
           <p>
-            This project gives you route groups, nested layouts, demo auth cookies,
-            and middleware protection so you can start shaping real product surfaces
-            instead of undoing boilerplate.
+            Freedom Landscaping handles the outdoor work so you don&apos;t have to.
+            From weekly lawn care to light construction, every job gets personal
+            attention and a job done right.
           </p>
           <div className="hero-actions">
-            <Link className="primary-link" href="/dashboard">
-              Open protected dashboard
+            <Link className="primary-link" href="/#contact">
+              Get a free quote
             </Link>
-            <Link className="ghost-link" href="/about">
-              Inspect the route strategy
+            <Link className="ghost-link" href="/#services">
+              See what we do
             </Link>
           </div>
           <ul className="stack-list">
-            <li>App Router route groups for public, auth, and protected sections.</li>
-            <li>Nested dashboard layouts for projects and account settings.</li>
-            <li>Middleware plus server-side session checks for defense in depth.</li>
+            <li>Lawn maintenance, cleanup &amp; mulching.</li>
+            <li>Retaining walls, borders &amp; stone pathways.</li>
+            <li>Reliable, owner-operated — no subcontractors.</li>
           </ul>
         </article>
 
         <aside className="info-card">
-          <strong>Suggested structure</strong>
+          <strong>Ready to get started?</strong>
           <p>
-            Start broad with route groups, then add shared layouts only where the
-            UI shell or authorization boundary actually changes.
+            Call or text for a free on-site estimate. Most quotes are delivered
+            the same day.
           </p>
-          <div className="code-block">
-            <code>{`src/app
-  (marketing)/
-  (auth)/login/
-  (protected)/dashboard/
-  (protected)/account/settings/`}</code>
+          <div className="code-block" style={{ marginTop: "1.25rem" }}>
+            <code style={{ fontFamily: "inherit", fontSize: "1.05rem" }}>
+              📞 (555) 867-5309
+            </code>
           </div>
+          <p style={{ marginTop: "1.1rem" }}>
+            Serving residential and small commercial properties. Licensed and
+            insured.
+          </p>
         </aside>
       </section>
 
-      <section className="section-block">
-        <h2 className="section-title">Built to branch cleanly as the app grows</h2>
-        <div className="route-grid">
-          {routeCards.map((card) => (
-            <article className="route-card" key={card.path}>
-              <strong>{card.title}</strong>
-              <p>{card.description}</p>
-              <code>{card.path}</code>
+      {/* Services */}
+      <section className="section-block" id="services">
+        <span className="eyebrow">What we offer</span>
+        <h2 className="section-title">Services built for real yards</h2>
+        <div className="service-grid">
+          {services.map((s) => (
+            <article className="service-card" key={s.title}>
+              <div className="service-icon">{s.icon}</div>
+              <strong>{s.title}</strong>
+              <p>{s.description}</p>
             </article>
           ))}
+        </div>
+      </section>
+
+      {/* Why us */}
+      <section className="section-block">
+        <span className="earth-eyebrow">Why Freedom Landscaping</span>
+        <h2 className="section-title">Small company, big difference</h2>
+        <div className="why-grid">
+          {reasons.map((r) => (
+            <article className="why-card" key={r.title}>
+              <strong>{r.title}</strong>
+              <p>{r.body}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* Contact CTA */}
+      <section className="section-block" id="contact">
+        <div className="cta-block">
+          <div>
+            <h2>Let&apos;s talk about your yard.</h2>
+            <p>Free estimates. No obligation. Fast response.</p>
+          </div>
+          <Link className="cta-light-link" href="mailto:hello@freedomlandscaping.com">
+            Email us today
+          </Link>
         </div>
       </section>
     </main>
   );
 }
+

@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Fraunces, Space_Grotesk } from "next/font/google";
+import Script from "next/script";
+
+import { themeBootstrapScript } from "@/lib/theme";
 import "./globals.css";
 
 const displayFont = Fraunces({
@@ -13,8 +16,8 @@ const bodyFont = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Freedom Site",
-  description: "Nested and protected route scaffolding with the Next.js App Router.",
+  title: "Freedom Landscaping",
+  description: "Professional lawn maintenance, yard cleanup, and light construction services for your home or property.",
 };
 
 export default function RootLayout({
@@ -23,7 +26,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${displayFont.variable} ${bodyFont.variable}`}>
+    <html lang="en" className={`${displayFont.variable} ${bodyFont.variable}`} suppressHydrationWarning>
+      <head>
+        <Script id="theme-bootstrap" strategy="beforeInteractive">
+          {themeBootstrapScript}
+        </Script>
+      </head>
       <body>{children}</body>
     </html>
   );

@@ -2,43 +2,57 @@ export default function AboutPage() {
   return (
     <main>
       <section className="section-block">
-        <span className="eyebrow">Route map</span>
-        <h1 className="section-title">How this scaffold is organized</h1>
+        <span className="eyebrow">About us</span>
+        <h1 className="section-title">A one-man operation you can trust</h1>
         <div className="feature-grid">
           <article className="info-card">
-            <strong>Public routes</strong>
+            <strong>Who we are</strong>
             <p>
-              The marketing group owns pages that should keep a lightweight shell,
-              public navigation, and no auth checks.
+              Freedom Landscaping is a sole-proprietor landscaping business serving
+              homeowners and small commercial properties in the local area. Every
+              estimate, every job, and every follow-up comes directly from the owner.
             </p>
-            <span className="code-inline">/(marketing)</span>
           </article>
           <article className="info-card">
-            <strong>Protected routes</strong>
+            <strong>How we work</strong>
             <p>
-              The protected group contains the app shell, shared sidebar, and the
-              guardrails that require a valid session.
+              We show up on time, communicate clearly, and leave your property
+              cleaner than we found it. No shortcuts, no upsells, just honest work
+              at a fair price with a handshake guarantee.
             </p>
-            <span className="code-inline">/(protected)</span>
           </article>
           <article className="info-card">
-            <strong>Nested layouts</strong>
+            <strong>Our services</strong>
             <p>
-              Dashboard routes get their own sub-navigation without forcing the same
-              layout onto account settings or future product areas.
+              Lawn maintenance and mowing, spring and fall cleanups, mulch
+              installation, bush and hedge trimming, light construction like
+              retaining walls and stone borders, and seasonal work including
+              gutter cleaning and snow removal.
             </p>
-            <span className="code-inline">dashboard/layout.tsx</span>
           </article>
           <article className="info-card">
-            <strong>Middleware handoff</strong>
+            <strong>Service area</strong>
             <p>
-              Middleware handles redirects early and preserves the intended target in
-              a next query string for a smoother login flow.
+              We serve residential neighborhoods and light commercial properties
+              within a reasonable drive. Not sure if we cover your area? Give us
+              a call — we&apos;re happy to discuss options.
             </p>
-            <span className="code-inline">middleware.ts</span>
           </article>
+        </div>
+      </section>
+
+      <section className="section-block">
+        <div className="cta-block">
+          <div>
+            <h2>Ready to get a quote?</h2>
+            <p>Free on-site estimates. Most quotes same day.</p>
+          </div>
+          <a className="cta-light-link" href="tel:5558675309">
+            Call (555) 867-5309
+          </a>
         </div>
       </section>
     </main>
   );
 }
+
